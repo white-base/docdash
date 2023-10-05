@@ -352,14 +352,15 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav += linktoFn('', item.name);
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                if (conf.templates.default.useLongnameInNav) {
+                if (conf.templates.default.useLongnameInNav || item.kind === 'namespace') {
                     displayName = item.longname;
                 } else {
                     displayName = item.name;
                 }
                 itemsNav += linktoFn(item.longname, displayName.replace(/\b(module|event):/g, ''));
 
-                if (docdash.static && members.find(function (m) { return m.scope === 'static'; } )) {
+                // POINT:
+                // if (docdash.static && members.find(function (m) { return m.scope === 'static'; } )) {
                     itemsNav += "<ul class='members'>";
 
                     members.forEach(function (member) {
@@ -373,7 +374,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     });
 
                     itemsNav += "</ul>";
-                }
+                // }
 
                 if (methods.length) {
                     itemsNav += "<ul class='methods'>";
@@ -383,7 +384,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                         if (docdash.private === false && method.access === 'private') return;
 
                         var navItem = '';
-                        var navItemLink = linkto(method.longname, method.name);
+                        // var navItemLink = linkto(method.longname, method.name);
+                        // POINT:
+                        var navItemLink = linkto(method.longname, method.name+ '()');
 
                         navItem += "<li data-type='method'";
                         if(docdash.collapse)
@@ -436,7 +439,7 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
  * @param {array<object>} members.interfaces
- * @return {string} The HTML for the navigation sidebar.
+ * @return {string} The HTM_L for the navigation sidebar.
  */
 
 function buildNav(members) {
