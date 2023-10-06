@@ -373,6 +373,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                             if (member.scope === 'static') {
                                 itemLink = itemLink.replace('href=', 'style="text-decoration: underline;" href=');
                             }
+                            if (member.inherited && member.inherits && !member.overrides) {
+                                itemLink = itemLink.replace(/>([_a-zA-Z]+)</, '># $1<')
+                            }
                             itemsNav += itemLink;
                             itemsNav += "</li>";
                         });
@@ -393,6 +396,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                             var navItemLink = linkto(method.longname, method.name+ '()');
                             if (method.scope === 'static') {
                                 navItemLink = navItemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                            }
+                            if (method.inherited && method.inherits && !method.overrides) {
+                                navItemLink = navItemLink.replace(/>([_a-zA-Z\(\)]+)</, '># $1<')
                             }
     
                             navItem += "<li data-type='method'";
