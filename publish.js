@@ -335,6 +335,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                 var displayName;
                 var methods = find({kind:'function', memberof: item.longname});
                 var members = find({kind:'member', memberof: item.longname});
+                var events = find({kind:'event', memberof: item.longname});
                 var conf = env && env.conf || {};
                 var classes = '';
     
@@ -384,6 +385,33 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
     
                         itemsNav += "</ul>";
                     // }
+
+                    if (docdash.navEvent) {
+
+                        itemsNav += "<ul class='events'>";
+    
+                        events.forEach(function (event) {
+                            if (!event.scope === 'static') return;
+                            itemsNav += "<li data-type='event'";
+                            // if(docdash.collapse)
+                            //     itemsNav += " style='display: none;'";
+                            itemsNav += ">";
+                            // POINT:
+                            var itemLink = linkto(event.longname, event.name);
+                            if (event.scope === 'static') {
+                                itemLink = itemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                            }
+                            if (event.inherited && event.inherits && !event.overrides) {
+                                itemLink = itemLink.replace(/>([_a-zA-Z]+)</, '># $1<')
+                            } else {
+                                itemLink = itemLink.replace(/>([_a-zA-Z]+)</, '>+ $1<')
+                            }
+                            itemsNav += itemLink;
+                            itemsNav += "</li>";
+                        });
+    
+                        itemsNav += "</ul>";
+                    }
     
                     if (methods.length) {
                         itemsNav += "<ul class='methods'>";
