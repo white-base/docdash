@@ -1,4 +1,4 @@
-/*global env: true */
+(function (exports, require, module, __filename, __dirname) { module.paths = ["/usr/local/lib/node_modules/jsdoc/lib"].concat(module.paths).concat(["/usr/local/lib/node_modules/jsdoc/node_modules"]); /*global env: true */
 'use strict';
 
 var doop = require('jsdoc/util/doop');
@@ -369,7 +369,12 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                         if(docdash.collapse)
                             itemsNav += " style='display: none;'";
                         itemsNav += ">";
-                        itemsNav += linkto(member.longname, member.name);
+                        // POINT:
+                        var itemLink = linkto(member.longname, member.name);
+                        if (member.scope === 'static') {
+                            itemLink = itemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                        }
+                        itemsNav += itemLink;
                         itemsNav += "</li>";
                     });
 
@@ -387,6 +392,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                         // var navItemLink = linkto(method.longname, method.name);
                         // POINT:
                         var navItemLink = linkto(method.longname, method.name+ '()');
+                        if (method.scope === 'static') {
+                            navItemLink = navItemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                        }
 
                         navItem += "<li data-type='method'";
                         if(docdash.collapse)
@@ -539,7 +547,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     data = helper.prune(data);
 
-    docdash.sort !== false && data.sort('longname, version, since');
+    docdash.sort !== false && data.sort('longname,  version, since');
     helper.addEventListeners(data);
 
     var sourceFiles = {};
@@ -832,3 +840,5 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     saveChildren(tutorials);
 };
+
+});
