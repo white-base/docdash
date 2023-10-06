@@ -1,4 +1,3 @@
-(function (exports, require, module, __filename, __dirname) { module.paths = ["/usr/local/lib/node_modules/jsdoc/lib"].concat(module.paths).concat(["/usr/local/lib/node_modules/jsdoc/node_modules"]); /*global env: true */
 'use strict';
 
 var doop = require('jsdoc/util/doop');
@@ -332,87 +331,87 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             docdash.navLevel :
             Infinity;
 
-        items.forEach(function(item) {
-            var displayName;
-            var methods = find({kind:'function', memberof: item.longname});
-            var members = find({kind:'member', memberof: item.longname});
-            var conf = env && env.conf || {};
-            var classes = '';
-
-            // show private class?
-            if (docdash.private === false && item.access === 'private') return;
-
-            // depth to show?
-            if (item.ancestors && item.ancestors.length > level) {
-                classes += 'level-hide';
-            }
-
-            classes = classes ? ' class="'+ classes + '"' : '';
-            itemsNav +=  '<li'+ classes +'>';
-            if ( !hasOwnProp.call(item, 'longname') ) {
-                itemsNav += linktoFn('', item.name);
-            } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                if (conf.templates.default.useLongnameInNav || item.kind === 'namespace') {
-                    displayName = item.longname;
-                } else {
-                    displayName = item.name;
+            items.forEach(function(item) {
+                var displayName;
+                var methods = find({kind:'function', memberof: item.longname});
+                var members = find({kind:'member', memberof: item.longname});
+                var conf = env && env.conf || {};
+                var classes = '';
+    
+                // show private class?
+                if (docdash.private === false && item.access === 'private') return;
+    
+                // depth to show?
+                if (item.ancestors && item.ancestors.length > level) {
+                    classes += 'level-hide';
                 }
-                itemsNav += linktoFn(item.longname, displayName.replace(/\b(module|event):/g, ''));
-
-                // POINT:
-                // if (docdash.static && members.find(function (m) { return m.scope === 'static'; } )) {
-                    itemsNav += "<ul class='members'>";
-
-                    members.forEach(function (member) {
-                        if (!member.scope === 'static') return;
-                        itemsNav += "<li data-type='member'";
-                        if(docdash.collapse)
-                            itemsNav += " style='display: none;'";
-                        itemsNav += ">";
-                        // POINT:
-                        var itemLink = linkto(member.longname, member.name);
-                        if (member.scope === 'static') {
-                            itemLink = itemLink.replace('href=', 'style="text-decoration: underline;" href=');
-                        }
-                        itemsNav += itemLink;
-                        itemsNav += "</li>";
-                    });
-
-                    itemsNav += "</ul>";
-                // }
-
-                if (methods.length) {
-                    itemsNav += "<ul class='methods'>";
-
-                    methods.forEach(function (method) {
-                        if (docdash.static === false && method.scope === 'static') return;
-                        if (docdash.private === false && method.access === 'private') return;
-
-                        var navItem = '';
-                        // var navItemLink = linkto(method.longname, method.name);
-                        // POINT:
-                        var navItemLink = linkto(method.longname, method.name+ '()');
-                        if (method.scope === 'static') {
-                            navItemLink = navItemLink.replace('href=', 'style="text-decoration: underline;" href=');
-                        }
-
-                        navItem += "<li data-type='method'";
-                        if(docdash.collapse)
-                            navItem += " style='display: none;'";
-                        navItem += ">";
-                        navItem += navItemLink;
-                        navItem += "</li>";
-
-                        itemsNav += navItem;
-                    });
-
-                    itemsNav += "</ul>";
+    
+                classes = classes ? ' class="'+ classes + '"' : '';
+                itemsNav +=  '<li'+ classes +'>';
+                if ( !hasOwnProp.call(item, 'longname') ) {
+                    itemsNav += linktoFn('', item.name);
+                } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
+                    if (conf.templates.default.useLongnameInNav || item.kind === 'namespace') {
+                        displayName = item.longname;
+                    } else {
+                        displayName = item.name;
+                    }
+                    itemsNav += linktoFn(item.longname, displayName.replace(/\b(module|event):/g, ''));
+    
+                    // POINT:
+                    // if (docdash.static && members.find(function (m) { return m.scope === 'static'; } )) {
+                        itemsNav += "<ul class='members'>";
+    
+                        members.forEach(function (member) {
+                            if (!member.scope === 'static') return;
+                            itemsNav += "<li data-type='member'";
+                            if(docdash.collapse)
+                                itemsNav += " style='display: none;'";
+                            itemsNav += ">";
+                            // POINT:
+                            var itemLink = linkto(member.longname, member.name);
+                            if (member.scope === 'static') {
+                                itemLink = itemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                            }
+                            itemsNav += itemLink;
+                            itemsNav += "</li>";
+                        });
+    
+                        itemsNav += "</ul>";
+                    // }
+    
+                    if (methods.length) {
+                        itemsNav += "<ul class='methods'>";
+    
+                        methods.forEach(function (method) {
+                            if (docdash.static === false && method.scope === 'static') return;
+                            if (docdash.private === false && method.access === 'private') return;
+    
+                            var navItem = '';
+                            // var navItemLink = linkto(method.longname, method.name);
+                            // POINT:
+                            var navItemLink = linkto(method.longname, method.name+ '()');
+                            if (method.scope === 'static') {
+                                navItemLink = navItemLink.replace('href=', 'style="text-decoration: underline;" href=');
+                            }
+    
+                            navItem += "<li data-type='method'";
+                            if(docdash.collapse)
+                                navItem += " style='display: none;'";
+                            navItem += ">";
+                            navItem += navItemLink;
+                            navItem += "</li>";
+    
+                            itemsNav += navItem;
+                        });
+    
+                        itemsNav += "</ul>";
+                    }
+    
+                    itemsSeen[item.longname] = true;
                 }
-
-                itemsSeen[item.longname] = true;
-            }
-            itemsNav += '</li>';
-        });
+                itemsNav += '</li>';
+            });
 
         if (itemsNav !== '') {
             if(docdash.collapse === "top") {
@@ -447,7 +446,7 @@ function linktoExternal(longName, name) {
  * @param {array<object>} members.tutorials
  * @param {array<object>} members.events
  * @param {array<object>} members.interfaces
- * @return {string} The HTM_L for the navigation sidebar.
+ * @return {string} The HTML for the navigation sidebar.
  */
 
 function buildNav(members) {
@@ -547,7 +546,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     data = helper.prune(data);
 
-    docdash.sort !== false && data.sort('longname,  version, since');
+    docdash.sort !== false && data.sort('longname, version, since');
     helper.addEventListeners(data);
 
     var sourceFiles = {};
@@ -840,5 +839,3 @@ exports.publish = function(taffyData, opts, tutorials) {
 
     saveChildren(tutorials);
 };
-
-});
