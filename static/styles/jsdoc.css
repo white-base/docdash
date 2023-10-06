@@ -724,6 +724,10 @@ html[data-search-mode] .level-hide {
   margin-right: 5px;
 }
 
+nav ul .events a {
+  color: rgb(36 39 40);
+}
+
 #disqus_thread{
     margin-left: 30px;
 }
